@@ -4,6 +4,7 @@ let Sequelize = require('sequelize-cockroachdb');
 let fs = require('fs');
 let bodyParser =    require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 
 app.use("/css/",express.static("css"));
