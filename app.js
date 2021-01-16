@@ -2,6 +2,9 @@ let express = require("express");
 app = express();
 let Sequelize = require('sequelize-cockroachdb');
 let fs = require('fs');
+let bodyParser =    require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.use("/css/",express.static("css"));
 app.use("/front-end/assets",express.static("front-end/assets"));
@@ -55,8 +58,8 @@ app.get("/start", function (req,res){
 
 //trying it oout the oop way
 // Connect to CockroachDB through Sequelize.
-let sequelize = new Sequelize('defaultdb/', 'abdulrahman', 'Iloveabdul123', {
-    host: 'free-tier.gcp-us-central1.cockroachlabs.cloud',
+let sequelize = new Sequelize('defaultdb', 'abdulrahman', 'Ilovebangladesh', {
+    host: 'free-tier.gcp-us-central1.cockroachlabs.cloud/pastel-vole',
     dialect: 'postgres',
     port: 26257,
     logging: false,
@@ -79,17 +82,18 @@ let sequelize = new Sequelize('defaultdb/', 'abdulrahman', 'Iloveabdul123', {
 // }
 
 
-try {
-    sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
+
+
+//form sends the string here when submit is pressed
+app.post("/makeq", function (req,res) {
+    console.log(req.body.notes);
 
 
 
+})
 
+const HEROKU_PORT = process.env.PORT;
 
-app.listen(process.env.PORT, function (){
+app.listen(3000, function (){
     console.log("Server started");
 })
