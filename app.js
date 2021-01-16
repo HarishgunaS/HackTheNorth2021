@@ -11,6 +11,13 @@ var async = require('async');
 var fs = require('fs');
 var pg = require('pg');
 
+//creating data directory for input.txt and questions.json
+var dir = 'data/';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
 // Connect to the bank database.
 
 var config = {
@@ -112,10 +119,19 @@ app.get("/start", function (req,res){
 
 //form sends the string here when submit is pressed
 app.post("/makeq", function (req,res) {
-    console.log(req.body.notes);
+    //console.log(req.body.notes);
+    //writing file (sync, sorry)
+    fs.writeFileSync('data/' + "input.txt", req.body.notes, 'ascii', function (err) {
+        if (err) return console.log(err);
+        console.log("Text written to "+  "input.txt");
+    });
+    //running python (sync again, sorry)
+    console.log("Python running now");
+    const exec = require("child_process").execSync;
+    exec("python3 question_generation/generate_json.py input.txt");
 
-
-
+    
+    
 })
 
 
@@ -143,7 +159,8 @@ const {
 
 const {
     conversation
-} = require('@assistant/conversation')
+} = require('@assistant/conversation');
+const { CANCELLED } = require("dns");
 
 // Create an app instance
 const appGoogle = conversation();
