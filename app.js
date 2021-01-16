@@ -25,8 +25,9 @@ let URI = "postgres://abdulrahman:d1dkUYmnI1dqkSmY@free-tier.gcp-us-central1.coc
 let cert_dir = __dirname + "/ssl/cc-ca.crt";
 console.log(cert_dir);
 
-// const sequelize = new Sequelize('postgres://abdulrahman:d1dkUYmnI1dqkSmY@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/pastel-vole-236.defaultdb?sslmode=verify-full&sslrootcert=' + cert_dir);
-//
+ const sequelize = new Sequelize('postgres://abdulrahman:d1dkUYmnI1dqkSmY@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/pastel-vole-236.defaultdb?sslmode=verify-full&sslrootcert=' + cert_dir);
+// //
+// sequelize.authenticate();
 // const User = sequelize.define('User', {
 //     // Model attributes are defined here
 //     firstName: {
@@ -58,18 +59,18 @@ app.get("/start", function (req,res){
 
 //trying it oout the oop way
 // Connect to CockroachDB through Sequelize.
-let sequelize = new Sequelize('defaultdb', 'abdulrahman', 'Ilovebangladesh', {
-    host: 'free-tier.gcp-us-central1.cockroachlabs.cloud/pastel-vole',
-    dialect: 'postgres',
-    port: 26257,
-    logging: false,
-    dialectOptions: {
-        ssl: {
-            ca: fs.readFileSync('ssl/cc-ca.crt')
-                .toString()
-        }
-    }
-});
+// let sequelize = new Sequelize('defaultdb', 'abdulrahman', 'Ilovebangladesh', {
+//     host: 'free-tier.gcp-us-central1.cockroachlabs.cloud/pastel-vole',
+//     dialect: 'postgres',
+//     port: 26257,
+//     logging: false,
+//     dialectOptions: {
+//         ssl: {
+//             ca: fs.readFileSync('ssl/cc-ca.crt')
+//                 .toString()
+//         }
+//     }
+// });
 
 
 
@@ -92,8 +93,53 @@ app.post("/makeq", function (req,res) {
 
 })
 
+
+//ACTION ON SDK PART
+
+const {
+    dialogflow,
+    actionssdk,
+    Image,
+    Table,
+    Carousel,
+} = require('actions-on-google');
+// const express = require('express');
+// const bodyParser = require('body-parser');
+
+// const app = dialogflow();
+
+// app.intent('Default Welcome Intent', (conv) => {
+//     conv.ask('How are you?');
+//   });
+
+// app.intent('bye', (conv) => {
+//     conv.close('See you later!');
+//   });
+
+const {
+    conversation
+} = require('@assistant/conversation')
+
+// Create an app instance
+const appGoogle = conversation();
+
+// Register handlers for Actions SDK
+
+appGoogle.handle('handler', conv => {
+    conv.add('Hi, how is it going?')
+    conv.add(new Image({
+        url: 'https://developers.google.com/web/fundamentals/accessibility/semantics-builtin/imgs/160204193356-01-cat-500.jpg',
+        alt: 'A cat',
+    }))
+})
+
+expressApp.post('/fulfillment', appGoogle);
+
+
+
+
 const HEROKU_PORT = process.env.PORT;
 
-app.listen(3000, function (){
+app.listen(HEROKU_PORT||3000, function (){
     console.log("Server started");
 })
