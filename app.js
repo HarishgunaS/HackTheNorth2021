@@ -1,11 +1,35 @@
 let express = require("express");
 app = express();
 let Sequelize = require('sequelize-cockroachdb');
-let fs = require('fs');
+//let fs = require('fs');
 let bodyParser =    require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+//new
+var async = require('async');
+var fs = require('fs');
+var pg = require('pg');
+
+// Connect to the bank database.
+
+var config = {
+    user: 'arjuns',
+    password: 'arjunhackthenorth',
+    host: 'free-tier.gcp-us-central1.cockroachlabs.cloud',
+    database: 'pastel-vole-236.bank',
+    port: 26257,
+    ssl: {
+        ca: fs.readFileSync('ssl/certs/cc-ca.crt')
+            .toString(),
+        key: fs.readFileSync('ssl/certs/client.arjuns.key')
+            .toString(),
+        cert: fs.readFileSync('ssl/certs/client.arjuns.crt')
+            .toString()
+    }
+};
+
+//end new
 
 app.use("/css/",express.static("css"));
 app.use("/front-end/assets",express.static("front-end/assets"));
@@ -21,13 +45,13 @@ app.get("/", function (req,res) {
 });
 
 //Passing the URI string
-
+/*
 let URI = "postgres://abdulrahman:d1dkUYmnI1dqkSmY@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/pastel-vole-236.defaultdb?sslmode=verify-full&sslrootcert=cc-ca.crt/cc-ca.crt"
 let cert_dir = __dirname + "/ssl/cc-ca.crt";
 console.log(cert_dir);
 
  const sequelize = new Sequelize('postgres://abdulrahman:d1dkUYmnI1dqkSmY@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/pastel-vole-236.defaultdb?sslmode=verify-full&sslrootcert=' + cert_dir);
-// //
+*/
 // sequelize.authenticate();
 // const User = sequelize.define('User', {
 //     // Model attributes are defined here
