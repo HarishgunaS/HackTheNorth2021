@@ -133,7 +133,7 @@ appGoogle.handle('handler', conv => {
     }))
 })
 
-expressApp.post('/fulfillment', appGoogle);
+app.post('/fulfillment', appGoogle);
 
 
 
