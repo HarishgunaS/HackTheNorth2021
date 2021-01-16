@@ -123,8 +123,12 @@ const appGoogle = conversation();
 
 // Register handlers for Actions SDK
 
-appGoogle.handle('handler', conv => {
-    conv.add(`You said ${conv.input.raw}`)
+appGoogle.handle('question', conv => {
+    conv.add("Here is the question!")
+})
+
+appGoogle.handle('answer', conv => {
+    conv.add("Here is the answer!")
 })
 
 app.post('/fulfillment', appGoogle);
