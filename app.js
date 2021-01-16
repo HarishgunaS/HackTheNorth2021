@@ -115,6 +115,51 @@ app.get("/start", function (req,res){
 // }
 
 
+var pool = new pg.Pool(config);
+
+pool.connect(function (err, client, done) {
+
+    // Close communication with the database and exit.
+    var finish = function () {
+        done();
+        process.exit();
+    };
+
+    if (err) {
+        console.error('could not connect to cockroachdb', err);
+        finish();
+    }
+
+    async.waterfall([
+            function (next) {
+                // Create the 'accounts' table.
+                client.query('CREATE TABLE IF NOT EXISTS qna (question TEXT, ans TEXT not null);', next);
+            },
+
+            function (results, next) {
+                // Insert two rows into the 'accounts' table.
+                client.query("INSERT INTO qna VALUES ('What does the fox say\?', 'eueue');",next);
+            },//, ("What does the fox say\?", "Eeueue");
+            function (results, next) {
+                // Print out account balances.
+                client.query('SELECT question, ans FROM qna;', next);
+            },
+        ],
+        function (err, results) {
+            if (err) {
+                console.error('Error inserting into and selecting from qna: ', err);
+                finish();
+            }
+
+            console.log('QnAs:');
+            results.rows.forEach(function (row) {
+                console.log(row);
+            });
+
+            finish();
+        });
+
+
 
 
 //form sends the string here when submit is pressed
@@ -178,6 +223,6 @@ app.post('/fulfillment', appGoogle);
 
 const HEROKU_PORT = process.env.PORT;
 
-app.listen(HEROKU_PORT||3000, function (){
+app.listen(3000, function (){
     console.log("Server started");
 })
