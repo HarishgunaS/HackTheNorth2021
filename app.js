@@ -1,5 +1,5 @@
 let express = require("express");
-let app = express();
+app = express();
 let Sequelize = require('sequelize-cockroachdb');
 let fs = require('fs');
 
