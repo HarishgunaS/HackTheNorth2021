@@ -168,11 +168,7 @@ const appGoogle = conversation();
 // Register handlers for Actions SDK
 
 appGoogle.handle('handler', conv => {
-    conv.add('Hi, how is it going?')
-    conv.add(new Image({
-        url: 'https://developers.google.com/web/fundamentals/accessibility/semantics-builtin/imgs/160204193356-01-cat-500.jpg',
-        alt: 'A cat',
-    }))
+    conv.add(`You said ${conv.input.raw}`)
 })
 
 app.post('/fulfillment', appGoogle);
