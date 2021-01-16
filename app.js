@@ -77,7 +77,29 @@ app.post("/makeq", function (req,res) {
 
     let jsonFile = fs.readFileSync('data/questions.json');
     let jsonObject = JSON.parse(jsonFile);
-    console.log(jsonObject);
+
+    Object.keys(jsonObject).forEach(function (key){
+        let answer_entry = jsonObject[key].answer;
+        let question_entry = jsonObject[key].question;
+
+        let query_statement = `INSERT INTO qna VALUES (${question_entry}, ${answer_entry});`;
+
+            pool.query(query_statement);
+            console.log("FILLED UP!");
+
+
+
+
+
+
+
+    });
+
+    res.redirect("/");
+
+
+
+
 
     // pool.connect(function (err, client, done) {
     //
