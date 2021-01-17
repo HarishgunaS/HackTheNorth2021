@@ -57,6 +57,10 @@ app.get("/start", function (req,res){
     res.render("start");
 })
 
+var rows;
+var numOfRows;
+var i = 0;
+
 app.get("/result", function(req,res){
 
     let query_statement2 = `SELECT * FROM qna ORDER by id ASC`;
@@ -65,8 +69,8 @@ app.get("/result", function(req,res){
         if(err){
             console.log(err);
         }
-        let rows = result.rows;
-        let numOfRows = result.rowCount;
+        rows = result.rows;
+        numOfRows = result.rowCount;
         console.log(rows)
         console.log(numOfRows);
     });
@@ -78,9 +82,6 @@ app.get("/result", function(req,res){
 
 // Connecting to CockroachDB using pg
 
-
-
-let jsonObject;
 
 //form sends the string here when submit is pressed
 app.post("/makeq", function (req,res) {
@@ -159,20 +160,21 @@ const appGoogle = conversation();
 
 // Register handlers for Actions SDK
 
-i=0
-current = json[i]
-
-keys = 
 
 appGoogle.handle('question', conv => {
-    conv.add("Here is the question!")
-    print(current.question)
+    conv.add("Here is the question!");
+    conv.add(rows[i].question);
 })
 
 appGoogle.handle('answer', conv => {
-    conv.add("Here is the answer!")
-    print(current.answer)
-    current = json[++i]
+    conv.add("Here is the answer!");
+    conv.add(rows[i].answer);
+    i = i + 1;
+    if (i >= numOfRows)
+    {
+        i = 0;
+    }
+
 })
 
 app.post('/fulfillment', appGoogle);
