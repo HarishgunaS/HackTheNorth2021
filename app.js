@@ -113,12 +113,12 @@ app.post("/makeq", function (req,res) {
     });
     //running python (sync again, sorry not sorry)
     console.log("Python running now");
-    const exec = require("child_process").execSync;
+    const exec = require("child_process").exec;
     let x = exec("python3 question_generation/generate_json.py input.txt");
 
 
 
-    res.redirect("/result");
+    // res.redirect("/result");
 
 
 
