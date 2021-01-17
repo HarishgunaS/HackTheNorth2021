@@ -82,9 +82,10 @@ app.post("/makeq", function (req,res) {
         let answer_entry = jsonObject[key].answer;
         let question_entry = jsonObject[key].question;
 
-        let query_statement = `INSERT INTO qna VALUES (${question_entry}, ${answer_entry});`;
+        let query_statement = `INSERT INTO qna VALUES ('${question_entry}', '${answer_entry}');`;
 
             pool.query(query_statement);
+            console.log(query_statement)
             console.log("FILLED UP!");
 
 
