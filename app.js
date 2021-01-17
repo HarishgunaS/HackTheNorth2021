@@ -67,9 +67,10 @@ app.get("/result", function(req,res){
         }
         let rows = result.rows;
         let numOfRows = result.rowCount;
+        console.log(rows)
+        console.log(numOfRows);
     });
-    console.log(rows)
-    console.log(numOfRows);
+
 
     }
 )
