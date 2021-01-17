@@ -106,7 +106,7 @@ app.get("/result", function(req,res){
 
 
 //form sends the string here when submit is pressed
-app.post("/makeq", function (req,res) {
+app.post("/makeq", async (req,res) => {
     //console.log(req.body.notes);
     //writing file (sync, sorry)
     fs.writeFileSync('data/' + "input.txt", req.body.notes, 'ascii', function (err) {
@@ -118,7 +118,7 @@ app.post("/makeq", function (req,res) {
     // const exec = require("child_process").exec;
     // exec("python3 question_generation/generate_json.py input.txt");
 
-    let job = workQueue.add();
+    let job = await workQueue.add();
 
     // res.redirect("/result");
 
