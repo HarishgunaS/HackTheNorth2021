@@ -114,7 +114,7 @@ app.post("/makeq", function (req,res) {
     //running python (sync again, sorry not sorry)
     console.log("Python running now");
     const exec = require("child_process").spawn;
-    exec("python3 question_generation/generate_json.py input.txt");
+    exec('python3',["question_generation/generate_json.py", "input.txt"]);
 
 
 
@@ -186,7 +186,7 @@ appGoogle.handle('question', conv => {
 
 appGoogle.handle('answer', conv => {
     conv.add("Here is the answer!");
-    conv.add(rows[i].answer);
+    conv.add(rows[i].ans);
     i = i + 1;
     if (i >= numOfRows)
     {
