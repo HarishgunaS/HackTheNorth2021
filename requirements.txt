@@ -1,4 +1,4 @@
 nltk==3.5  
-pytorch==1.7.1
+torch==1.7.1
 sentencepiece==0.1.95
 transformers==4.2.1
