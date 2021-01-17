@@ -42,6 +42,7 @@ let config = {
     }
 };
 
+let pool = new pg.Pool(config);
 
 
 
@@ -56,10 +57,27 @@ app.get("/start", function (req,res){
     res.render("start");
 })
 
+app.get("/result", function(req,res){
+
+    let query_statement2 = `SELECT * FROM qna ORDER by id ASC`;
+
+    pool.query(query_statement2, (err, result)=> {
+        if(err){
+            console.log(err);
+        }
+        let rows = result.rows;
+        let numOfRows = result.rowCount;
+    });
+    console.log(rows)
+    console.log(numOfRows);
+
+    }
+)
+
 
 // Connecting to CockroachDB using pg
 
-let pool = new pg.Pool(config);
+
 
 
 //form sends the string here when submit is pressed
@@ -96,7 +114,7 @@ app.post("/makeq", function (req,res) {
 
     });
 
-    res.redirect("/");
+    res.redirect("/result");
 
 
 
