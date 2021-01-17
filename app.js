@@ -63,17 +63,35 @@ var i = 0;
 
 app.get("/result", function(req,res){
 
-    let query_statement2 = `SELECT * FROM qna ORDER by id ASC`;
+    let jsonFile = fs.readFileSync('data/questions.json');
+    let jsonObject = JSON.parse(jsonFile);
 
-    pool.query(query_statement2, (err, result)=> {
-        if(err){
-            console.log(err);
-        }
-        rows = result.rows;
-        numOfRows = result.rowCount;
-        console.log(rows)
-        console.log(numOfRows);
+    Object.keys(jsonObject).forEach(function (key){
+        let answer_entry = jsonObject[key].answer;
+        let question_entry = jsonObject[key].question;
+
+        let query_statement = `INSERT INTO qna VALUES ('${question_entry}', '${answer_entry}');`;
+
+        pool.query(query_statement);
+        console.log(query_statement)
+        console.log("FILLED UP!");
+
+
+
+
+
+
+
     });
+
+
+
+
+
+
+
+
+
 
 
     res.render("result");
@@ -93,31 +111,12 @@ app.post("/makeq", function (req,res) {
         if (err) return console.log(err);
         console.log("Text written to "+  "input.txt");
     });
-    //running python (sync again, sorry)
+    //running python (sync again, sorry not sorry)
     console.log("Python running now");
-    const exec = require("child_process").execSync;
+    const exec = require("child_process").spawn;
     exec("python3 question_generation/generate_json.py input.txt");
 
-    let jsonFile = fs.readFileSync('data/questions.json');
-    let jsonObject = JSON.parse(jsonFile);
 
-    Object.keys(jsonObject).forEach(function (key){
-        let answer_entry = jsonObject[key].answer;
-        let question_entry = jsonObject[key].question;
-
-        let query_statement = `INSERT INTO qna VALUES ('${question_entry}', '${answer_entry}');`;
-
-            pool.query(query_statement);
-            console.log(query_statement)
-            console.log("FILLED UP!");
-
-
-
-
-
-
-
-    });
 
     res.redirect("/result");
 
@@ -162,6 +161,23 @@ const appGoogle = conversation();
 
 // Register handlers for Actions SDK
 
+
+appGoogle.handle('initialize', conv => {
+
+
+    let query_statement2 = `SELECT * FROM qna ORDER by id ASC`;
+
+    pool.query(query_statement2, (err, result)=> {
+        if(err){
+            console.log(err);
+        }
+        rows = result.rows;
+        numOfRows = result.rowCount;
+        console.log(rows)
+        console.log(numOfRows);
+    });
+
+})
 
 appGoogle.handle('question', conv => {
     conv.add("Here is the question!");
