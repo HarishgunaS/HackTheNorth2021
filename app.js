@@ -61,6 +61,7 @@ app.get("/start", function (req,res){
 
 let pool = new pg.Pool(config);
 
+let jsonObject;
 
 //form sends the string here when submit is pressed
 app.post("/makeq", function (req,res) {
@@ -127,13 +128,6 @@ app.post("/makeq", function (req,res) {
 
 //ACTION ON SDK PART ///////////////////////////////
 
-const {
-    dialogflow,
-    actionssdk,
-    Image,
-    Table,
-    Carousel,
-} = require('actions-on-google');
 
 
 const {
@@ -146,12 +140,20 @@ const appGoogle = conversation();
 
 // Register handlers for Actions SDK
 
+i=0
+current = json[i]
+
+keys = 
+
 appGoogle.handle('question', conv => {
     conv.add("Here is the question!")
+    print(current.question)
 })
 
 appGoogle.handle('answer', conv => {
     conv.add("Here is the answer!")
+    print(current.answer)
+    current = json[++i]
 })
 
 app.post('/fulfillment', appGoogle);
