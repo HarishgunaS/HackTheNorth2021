@@ -118,7 +118,7 @@ app.post("/makeq", async (req,res) => {
     // const exec = require("child_process").exec;
     // exec("python3 question_generation/generate_json.py input.txt");
 
-    let job = await workQueue.add();
+     workQueue.add();
 
     // res.redirect("/result");
 
