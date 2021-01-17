@@ -4,6 +4,8 @@ let Sequelize = require('sequelize-cockroachdb');
 let async = require('async');
 let fs = require('fs');
 let pg = require('pg');
+let Queue = require('bull');
+let REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 let bodyParser =    require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -14,7 +16,7 @@ app.use("/ssl", express.static("ssl"));
 
 app.set("view engine", "ejs");
 
-
+let workQueue = new Queue('work', REDIS_URL);
 
 
 //creating data directory for input.txt and questions.json
@@ -113,11 +115,10 @@ app.post("/makeq", function (req,res) {
     });
     //running python (sync again, sorry not sorry)
     console.log("Python running now");
-    const exec = require("child_process").exec;
+    // const exec = require("child_process").exec;
+    // exec("python3 question_generation/generate_json.py input.txt");
 
-    exec("python3 question_generation/generate_json.py input.txt");
-
-
+    let job = workQueue.add();
 
     // res.redirect("/result");
 
