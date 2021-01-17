@@ -114,33 +114,13 @@ app.post("/makeq", function (req,res) {
     //running python (sync again, sorry not sorry)
     console.log("Python running now");
     const exec = require("child_process").execSync;
-    let x = exec('python3',["question_generation/generate_json.py", "input.txt"]);
+    let x = exec("python3 question_generation/generate_json.py input.txt");
 
 
 
     res.redirect("/result");
 
 
-
-
-
-    // pool.connect(function (err, client, done) {
-    //
-    //     // Close communication with the database and exit.
-    //     let finish = function () {
-    //         done();
-    //         process.exit();
-    //     };
-    //
-    //     if (err) {
-    //         console.error('could not connect to cockroachdb', err);
-    //         finish();
-    //     }
-    //
-    //     client.query("INSERT INTO qna VALUES ('What does the fox say\?', 'eueue');", next);
-    //     finish();
-    //
-    // });
 
     
     
